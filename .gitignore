@@ -1,5 +1,5 @@
 .idea/
-/core/config/.env
+/.env
 /bot/log/
 /venv
 /bot/images_temp/

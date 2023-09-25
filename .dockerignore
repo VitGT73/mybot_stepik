@@ -93,7 +93,7 @@ poetry.lock
 *.sage.py
 
 # Environments
-core/config/.env
+.env
 .venv
 venv/
 
