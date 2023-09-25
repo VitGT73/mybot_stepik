@@ -36,7 +36,7 @@ alembic revision --autogenerate -m "Create first tables"
 ```
 
 Подключаем **black**  файле `alembic.ini`, для этого раскомментируем строки:
-```python
+```config
  hooks = black
  black.type = console_scripts
  black.entrypoint = black

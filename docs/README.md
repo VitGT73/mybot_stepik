@@ -3,25 +3,62 @@
 
 #### ***Poetry***
 ##### для первичной установки
-`poetry install`
+```shell
+poetry install
+```
 ##### для обновления всех пакетов:
-`poetry update`
+```shell
+poetry update
+```
 
 ##### или только одного пакета:
-`poetry update pygame`
+
+```shell
+poetry update pygame
+```
 
 ##### Чтобы добавить новую библиотеку достаточно выполнить:
 
-`poetry add pygame`
+```
+poetry add pygame
+```
 
 ##### Чтобы удалить зависимость достаточно выполнить:
+```shell
+poetry remove pygame
+```
 
-`poetry remove pygame`
 
 ##### Чтобы посмотреть зависимости проекта:
 
-`poetry show`
+```shell
+poetry show
+```
 
 ##### Посмотреть дерево зависимостей проекта можно при помощи:
 
-`poetry show --tree`
+```shell
+poetry show --tree
+```
+
+Чтобы Poetry создавал виртуальное окружение не в cache-директории, 
+а в корневом каталоге проекта. Для этого установим переменной 
+virtualenvs.in-project  значение true:
+```shell
+poetry config virtualenvs.in-project true
+```
+
+Чтобы убедиться, что значение успешно установилась, выполним команду:
+```shell
+poetry config virtualenvs.in-project
+```
+
+Чтобы посмотреть все текущие параметры Poetry, используйте команду:
+```shell
+poetry config --list
+```
+
+Если параметр нужно удалить, используйте флаг `--unset`:
+```shell
+poetry config virtualenvs.in-project --unset
+```
