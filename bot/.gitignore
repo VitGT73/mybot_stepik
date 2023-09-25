@@ -1,0 +1,10 @@
+venv/
+.idea/
+
+# Каталог сборки
+docs/
+
+# .env-файлы
+../core/settings/.env
+/log/!/core/settings/.env
+/images_temp/
