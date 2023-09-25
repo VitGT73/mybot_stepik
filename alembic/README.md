@@ -2,22 +2,20 @@ Generic single-database configuration with an async dbapi.
 
 Установка Alembic:
 
-```console
+```shell
 poetry add alembic
 ```
 
 
 Конфигурация сгенерированная с помощью команды:
 
-```console
+```shell
 alembic init -t async alembic
 ```
 
 
-
 Для сортировки миграций в хронологическом порядке раскомментируем в файле `alembic.ini` строчку:
 `# file_template = %%(year)d_%%(month).2d_%%(day).2d_%%(hour).2d%%(minute).2d-%%(rev)s_%%(slug)s`
-
 
 Подключаем модели из приложения и Читаем конфигурацию Алхимии и модели.
 Добавляем в `env.py` вместо `# target_metadata = None` следующие строки:
@@ -31,7 +29,7 @@ config.set_main_option("sqlalchemy.url", config.sql_url)
 ```
 
 Создаем первый ревижн таблицы:
-```concole
+```shell
 alembic revision --autogenerate -m "Create first tables"
 ```
 
@@ -45,7 +43,7 @@ alembic revision --autogenerate -m "Create first tables"
 
 Обновляемся до первой миграции:
 
-```console
+```shell
 alembic upgrade head
 ```
 
