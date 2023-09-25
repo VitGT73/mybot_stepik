@@ -50,7 +50,7 @@ alembic upgrade head
 ```
 
 Откатится на один шаг назад:
-```
+```shell
 alembic downgrade -1
 ```
 
