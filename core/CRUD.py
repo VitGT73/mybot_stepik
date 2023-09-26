@@ -1,14 +1,9 @@
 import asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import db_helper, Course, Module, Lesson, Step, StepType
+f
 
 
-async def add_step_type(session: AsyncSession, name: str) -> StepType:
-    steptype = StepType(name=name)
-    session.add(steptype)
-    await session.commit()
-    print("Type:", steptype)
-    return steptype
 
 
 async def main():

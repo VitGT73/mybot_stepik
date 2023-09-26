@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 
 BASE_DIR = Path(__file__).parent.parent.parent
-DB_PATH = BASE_DIR / "db/db.sqlite3"
+DB_PATH = BASE_DIR / "core/db/db.sqlite3"
 env_file = BASE_DIR  / ".env"
 
 class Settings(BaseSettings):
