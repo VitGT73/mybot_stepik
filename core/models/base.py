@@ -20,7 +20,7 @@ class Base(DeclarativeBase):
 class BaseHeader(Base):
     __abstract__ = True
 
-    title: Mapped[str] = mapped_column(String(60))
+    title: Mapped[str] = mapped_column(String(60),unique=True)
     last_update: Mapped[datetime | None]
 
     def __str__(self):
