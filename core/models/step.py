@@ -32,4 +32,4 @@ class StepType(Base):
     name: Mapped[str] = mapped_column(String(10), unique=True)
 
     def __str__(self) -> str:
-        return f"{self.__class__.__name__} (id={self.id!r}, step_type={self.step_type!r})"
+        return f"{self.__class__.__name__} (id={self.id!r}, step_type={self.name!r})"
