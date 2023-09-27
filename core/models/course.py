@@ -18,6 +18,9 @@ class Course(BaseHeader):
     module: Mapped[list["Module"]] = relationship(
         back_populates="course", cascade="all, delete-orphan"
     )
+
+    def __str__(self):
+        return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, url={self.url!r}, last_update={self.last_update!r})"
     # lesson: Mapped[list["Lesson"]] = relationship(
     #     back_populates="course", cascade="all, delete-orphan"
     # )

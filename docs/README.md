@@ -11,6 +11,11 @@ poetry init
 poetry install
 ```
 
+для синхронизации зависимостей:
+```shell
+poetry install --sync
+```
+
 для обновления всех пакетов:
 ```shell
 poetry update
