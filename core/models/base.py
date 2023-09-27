@@ -4,6 +4,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import declared_attr
 
 
 class Base(DeclarativeBase):
@@ -14,6 +15,11 @@ class Base(DeclarativeBase):
     def __repr__(self) -> str:
         return str(self)
 
+    # Автоматическое создание имени таблицы в нижнем регистре во множественном числе!
+    # (если оно не указано явно в свойстве __tablename__
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return f"{cls.__name__.lower()}s"
 
 #
 #
