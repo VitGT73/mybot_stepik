@@ -1,9 +1,16 @@
 
 ***Poetry***
+
+
+если мы добавляем Poetry в новый проект:
+```shell
+poetry init
+```
 для первичной установки
 ```shell
 poetry install
 ```
+
 для обновления всех пакетов:
 ```shell
 poetry update

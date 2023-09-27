@@ -3,7 +3,7 @@ name = "Степик - бот"
 version = "0.1.0"
 description = "Учебный прект"
 authors = ["VitGT73 <tvit@mail.ru>"]
-license = "MTI"
+license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
