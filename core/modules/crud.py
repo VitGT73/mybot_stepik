@@ -45,7 +45,8 @@ async def main():
     async with db_helper.session_factory() as session:
         # record = ("1.1 ВВедение",1)
         # await add_module(session=session, title=record[0],course_id= record[1])
-        await delete_module_by_id(session=session, id=1)
+        # await delete_module_by_id(session=session, id=1)
+        get_modules =
         await delete_modules(session=session, modules=get_modules)
 
 

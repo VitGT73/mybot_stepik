@@ -9,7 +9,7 @@
 # )
 import asyncio
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.courses import CourseUpdate, CourseCreate
@@ -23,7 +23,7 @@ async def add_course(session: AsyncSession, course_create: CourseCreate) -> Cour
     return course
 
 
-async def get_courses(session: AsyncSession) -> list[Course]:
+async def get_all_courses(session: AsyncSession) -> list[Course]:
     stmt = select(Course).order_by(Course.id)
     result: Result = await session.execute(statement=stmt)
     courses = result.scalars().all()
@@ -47,20 +47,38 @@ async def update_course(
     return course
 
 
+async def delete_course(session: AsyncSession, course: Course) -> None:
+    await session.delete(course)
+    await session.commit()
+
+async def delete_module_by_id(session: AsyncSession, id: int) -> None:
+    course = await session.get(Course, id)
+    await session.delete(course)
+    await session.commit()
+
+
+async def delete_all_courses(session: AsyncSession) -> None:
+    stmt = delete(Course)
+    await session.execute(stmt)
+    await session.commit()
+
+
 async def main():
     async with db_helper.session_factory() as session:
         upd_course = CourseUpdate(
-            url="https://www.google.com/",
-            title="Добрый, добрый Python - обучающий курс от Сергея Балакирева",
+            url="https://stepik.org/course/100707",
+            title="Злой, добрый Python - обучающий курс от Сергея Балакирева",
         )
         # lst = await get_courses(session=session)
         # print(lst)
         course = await get_course(session, 1)
-        print(course)
+        # print(course)
         course = await update_course(session, course, upd_course)
         # print(course)
         # record = ("1.1 ВВедение",1)
         # await add_module(session=session, title=record[0],course_id= record[1])
+
+        # await delete_all_courses(session=session)
 
 
 if __name__ == "__main__":

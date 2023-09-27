@@ -1,5 +1,6 @@
 import asyncio
 
+from core.courses import CourseCreate
 from core.courses.crud import add_course
 from core.models import db_helper
 
@@ -18,7 +19,8 @@ list_courses = [
 async def fill_courses(courses: list[(str, str)]):
     async with db_helper.session_factory() as session:
         for title, url in courses:
-            await add_course(session=session, title=title, url=url)
+            course = CourseCreate(title=title, url=url)
+            await add_course(session=session, course_create=course)
 
 
 if __name__ == "__main__":

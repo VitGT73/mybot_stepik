@@ -8,12 +8,12 @@ from pydantic import BaseModel, ConfigDict, HttpUrl
 
 class CursesBase(BaseModel):
     title: str
-    url: HttpUrl
+    url: str
 
     last_update: datetime | None = None
 
 
-class CourseCreate(BaseModel):
+class CourseCreate(CursesBase):
     pass
 
 
