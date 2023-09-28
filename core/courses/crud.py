@@ -34,19 +34,6 @@ async def get_course(session: AsyncSession, course_id: int) -> Course | None:
     return await session.get(Course, course_id)
 
 
-async def update_course(
-        session: AsyncSession,
-        course: Course,
-        course_update: CourseUpdate,
-) -> Course:
-    for name, value in course_update.model_dump(exclude_unset=True).items():
-        print(name, value)
-        setattr(course, name, value)
-        print(course)
-    await session.commit()
-    return course
-
-
 async def delete_course(session: AsyncSession, course: Course) -> None:
     await session.delete(course)
     await session.commit()
@@ -63,11 +50,24 @@ async def delete_all_courses(session: AsyncSession) -> None:
     await session.commit()
 
 
+async def update_course(
+        session: AsyncSession,
+        course: Course,
+        course_update: CourseUpdate,
+) -> Course:
+    for name, value in course_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(course, name, value)
+        print(course)
+    await session.commit()
+    return course
+
+
 async def main():
     async with db_helper.session_factory() as session:
         upd_course = CourseUpdate(
-            url="https://stepik.org/course/100707",
-            title="Злой, добрый Python - обучающий курс от Сергея Балакирева",
+            url="https://www.google.com",
+            title="Yandex!!!",
         )
         # lst = await get_courses(session=session)
         # print(lst)
