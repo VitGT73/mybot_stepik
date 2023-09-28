@@ -7,7 +7,6 @@ DB_PATH = BASE_DIR / "core/db/db.sqlite3"
 env_file = BASE_DIR / ".env"
 
 
-
 class DbSettings(BaseSettings):
     url: str = f"sqlite+aiosqlite:///{DB_PATH}"
     echo: bool = True
@@ -23,6 +22,7 @@ class BotSettings(BaseSettings):
     token: str
     pass
 
+
 class StepikSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=env_file,
@@ -35,9 +35,7 @@ class StepikSettings(BaseSettings):
 
 
 class Settings(BaseSettings):
-
-    model_config = SettingsConfigDict(env_file=env_file, env_file_encoding='utf-8',extra="ignore")
-
+    model_config = SettingsConfigDict(env_file=env_file, env_file_encoding='utf-8', extra="ignore")
 
     db: DbSettings = DbSettings()
     bot: BotSettings = BotSettings()
@@ -47,4 +45,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-print(settings)
