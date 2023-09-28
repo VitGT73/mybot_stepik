@@ -25,10 +25,3 @@ class Step(BaseHeader):
     lesson: Mapped["Lesson"] = relationship(back_populates="step")
 
 
-class StepType(Base):
-    __tablename__ = "step_types"
-
-    name: Mapped[str] = mapped_column(String(10), unique=True)
-
-    def __str__(self) -> str:
-        return f"{self.__class__.__name__} (id={self.id!r}, step_type={self.name!r})"
