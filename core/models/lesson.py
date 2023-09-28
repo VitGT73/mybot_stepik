@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from pydantic import HttpUrl
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
@@ -14,7 +13,7 @@ if TYPE_CHECKING:
 class Lesson(BaseHeader):
     __tablename__ = "lessons"
 
-    url: Mapped[HttpUrl] = mapped_column(String(2083))
+    url: Mapped[str] = mapped_column(String(2083))
 
     # course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
     module_id: Mapped[int] = mapped_column(ForeignKey("modules.id"))

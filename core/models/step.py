@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from pydantic import HttpUrl
 from sqlalchemy import ForeignKey
 from sqlalchemy.types import String, LargeBinary
 from sqlalchemy.orm import Mapped, relationship
@@ -15,7 +14,7 @@ class Step(BaseHeader):
     __tablename__ = "steps"
 
     number: Mapped[int]
-    url: Mapped[HttpUrl] = mapped_column(String(2083))
+    url: Mapped[str] = mapped_column(String(2083))
     image: Mapped[LargeBinary] = mapped_column(LargeBinary)
     # course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
     # module_id: Mapped[int] = mapped_column(ForeignKey("modules.id"))
