@@ -23,8 +23,8 @@ from core.modules import ModuleCreate, ModuleSchema
 async def get_all_modules(session: AsyncSession) -> list[Module]:
     stmt = select(Module).order_by(Module.id)
     result: Result = await session.execute(statement=stmt)
-    courses = result.scalars().all()
-    return list(courses)
+    modules = result.scalars().all()
+    return list(modules)
 
 
 async def get_module(session: AsyncSession, module_id: int) -> Module | None:
