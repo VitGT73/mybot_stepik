@@ -57,6 +57,18 @@ async def delete_step_by_id(session: AsyncSession, id: int) -> None:
     await session.commit()
 
 
+async def update_step(
+        session: AsyncSession,
+        step: Step,
+        step_update: StepUpdate
+) -> Step:
+    for name, value in step_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(step, name, value)
+        print(step)
+    await session.commit()
+    return step
+
 async def main():
     async with db_helper.session_factory() as session:
         step = StepCreate(title="1.1 Урок ВВедение", url="https://ya.ru", lesson_id=1)

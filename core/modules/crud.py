@@ -17,7 +17,7 @@ from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Module, db_helper
-from core.modules import ModuleCreate, ModuleSchema
+from core.modules import ModuleCreate, ModuleUpdate
 
 
 async def get_all_modules(session: AsyncSession) -> list[Module]:
@@ -52,6 +52,17 @@ async def delete_module_by_id(session: AsyncSession, id: int) -> None:
     await session.delete(module)
     await session.commit()
 
+async def update_module(
+        session: AsyncSession,
+        module: Module,
+        module_update: ModuleUpdate
+) -> Module:
+    for name, value in module_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(module, name, value)
+        print(module)
+    await session.commit()
+    return module
 
 async def main():
     async with db_helper.session_factory() as session:

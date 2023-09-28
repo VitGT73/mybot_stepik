@@ -52,6 +52,17 @@ async def delete_lesson_by_id(session: AsyncSession, id: int) -> None:
     await session.delete(lesson)
     await session.commit()
 
+async def update_module(
+        session: AsyncSession,
+        lesson: Lesson,
+        lesson_update: LessonUpdate
+) -> Lesson:
+    for name, value in lesson_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(lesson, name, value)
+        print(lesson)
+    await session.commit()
+    return lesson
 
 async def main():
     async with db_helper.session_factory() as session:

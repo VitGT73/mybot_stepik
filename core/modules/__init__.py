@@ -1,1 +1,1 @@
-from .schemas import ModuleCreate, ModuleSchema
+from .schemas import ModuleCreate, ModuleSchema, ModuleUpdate
