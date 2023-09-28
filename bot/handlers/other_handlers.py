@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
-from aiogram.utils.formatting import t
+# from aiogram.utils.formatting import
 
 from bot.keyboards import CoursesCallbackFactory
 
@@ -9,13 +9,15 @@ router = Router()
 router_inline_missing = Router()
 
 
-@router.message(F.text == "html")
-async def send_echo(message: Message):
-    user_id = message.from_user.id
-    await bot.send_chat_action(user_id, ChatActions.UPLOAD_DOCUMENT)
-    await asyncio.sleep(1)  # скачиваем файл и отправляем его пользователю
-    await bot.send_document(user_id, TEXT_FILE,
-                            caption='Этот файл специально для тебя!')
+
+
+# @router.message(F.text == "html")
+# async def send_echo(message: Message):
+#     user_id = message.from_user.id
+#     await bot.send_chat_action(user_id, ChatActions.UPLOAD_DOCUMENT)
+#     await asyncio.sleep(1)  # скачиваем файл и отправляем его пользователю
+#     await bot.send_document(user_id, TEXT_FILE,
+#                             caption='Этот файл специально для тебя!')
 
 #     msg = bold(text("fwwfwefwe","wefwefwe"))
 #     txt = '''

@@ -16,7 +16,7 @@ from core.courses import CourseUpdate, CourseCreate
 from core.models import Course, db_helper
 
 
-async def add_course(session: AsyncSession, course_create: CourseCreate) -> Course:
+async def create_course(session: AsyncSession, course_create: CourseCreate) -> Course:
     course = Course(**course_create.model_dump())
     session.add(course)
     await session.commit()

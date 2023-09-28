@@ -15,8 +15,9 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
     ReplyKeyboardRemove,
 )
+from core.config import settings
 
-TOKEN = "6344478735:AAFfpF53AKO6fYm8CFVh4JiDf9-KrQTRxW0"
+TOKEN = settings.bot.token
 
 form_router = Router()
 

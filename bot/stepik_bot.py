@@ -5,11 +5,14 @@ from pydantic import SecretStr
 # import structlog
 from bot.handlers import handler_router
 from bot.keyboards import set_main_menu
+from core.config import settings
 
 
 async def start_bot(token: str):
     # Инициализируем бот и диспетчер
+    # bot = Bot(token=token)
     bot = Bot(token=token)
+
     dp = Dispatcher()
 
     # формируем меню бота
