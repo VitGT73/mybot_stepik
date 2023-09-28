@@ -17,6 +17,7 @@ from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Module, db_helper
+from core.modules import ModuleCreate, ModuleSchema
 
 
 async def get_all_modules(session: AsyncSession) -> list[Module]:
@@ -30,10 +31,8 @@ async def get_module(session: AsyncSession, module_id: int) -> Module | None:
     return await session.get(Module, module_id)
 
 
-
-
-async def create_module(session: AsyncSession, title: str, course_id: int) -> Module:
-    module = Module(title=title, course_id=course_id)
+async def create_module(session: AsyncSession, module_create: ModuleCreate) -> Module:
+    module = Module(**module_create.model_dump())
     session.add(module)
     await session.commit()
     return module
@@ -54,15 +53,15 @@ async def delete_module_by_id(session: AsyncSession, id: int) -> None:
     await session.commit()
 
 
-
 async def main():
     async with db_helper.session_factory() as session:
-        # record = ("1.1 ВВедение",1)
-        # await add_module(session=session, title=record[0],course_id= record[1])
+        module = ModuleCreate(title="1.1 ВВедение", course_id=1)
+        await create_module(session=session, module_create=module)
         # await delete_module_by_id(session=session, id=1)
         get_modules = await get_all_modules(session=session)
         # await delete_modules(session=session, modules=get_modules)
         print(get_modules)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

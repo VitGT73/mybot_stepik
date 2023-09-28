@@ -7,7 +7,6 @@ from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer
 class CursesBase(BaseModel):
     title: str
     url: str
-
     last_update: datetime | None = None
 
 
@@ -25,7 +24,7 @@ class CourseUpdate(BaseModel):
         return str(self.url)
 
 
-class CourseSchema:
+class CourseSchema(CursesBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
