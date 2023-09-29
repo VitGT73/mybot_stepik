@@ -20,6 +20,13 @@ from core.models import Lesson, db_helper
 from core.lesson import LessonCreate, LessonUpdate, LessonSchema
 
 
+
+async def create_lesson(session: AsyncSession, lesson_create: LessonCreate) -> Lesson:
+    lesson = Lesson(**lesson_create.model_dump())
+    session.add(lesson)
+    await session.commit()
+    return lesson
+
 async def get_all_lessons(session: AsyncSession) -> list[Lesson]:
     stmt = select(Lesson).order_by(Lesson.id)
     result: Result = await session.execute(statement=stmt)
@@ -31,12 +38,19 @@ async def get_lesson(session: AsyncSession, module_id: int) -> Lesson | None:
     return await session.get(Lesson, module_id)
 
 
-async def create_lesson(session: AsyncSession, lesson_create: LessonCreate) -> Lesson:
-    lesson = Lesson(**lesson_create.model_dump())
-    session.add(lesson)
+
+
+async def update_module(
+        session: AsyncSession,
+        lesson: Lesson,
+        lesson_update: LessonUpdate
+) -> Lesson:
+    for name, value in lesson_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(lesson, name, value)
+        print(lesson)
     await session.commit()
     return lesson
-
 
 async def delete_lessons(session: AsyncSession, lessons: list[Lesson]) -> None:
     # module = Module(id=id)
@@ -52,17 +66,7 @@ async def delete_lesson_by_id(session: AsyncSession, id: int) -> None:
     await session.delete(lesson)
     await session.commit()
 
-async def update_module(
-        session: AsyncSession,
-        lesson: Lesson,
-        lesson_update: LessonUpdate
-) -> Lesson:
-    for name, value in lesson_update.model_dump(exclude_unset=True).items():
-        print(name, value)
-        setattr(lesson, name, value)
-        print(lesson)
-    await session.commit()
-    return lesson
+
 
 async def main():
     async with db_helper.session_factory() as session:

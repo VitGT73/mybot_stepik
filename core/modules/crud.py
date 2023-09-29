@@ -20,6 +20,13 @@ from core.models import Module, db_helper
 from core.modules import ModuleCreate, ModuleUpdate
 
 
+
+async def create_module(session: AsyncSession, module_create: ModuleCreate) -> Module:
+    module = Module(**module_create.model_dump())
+    session.add(module)
+    await session.commit()
+    return module
+
 async def get_all_modules(session: AsyncSession) -> list[Module]:
     stmt = select(Module).order_by(Module.id)
     result: Result = await session.execute(statement=stmt)
@@ -31,12 +38,17 @@ async def get_module(session: AsyncSession, module_id: int) -> Module | None:
     return await session.get(Module, module_id)
 
 
-async def create_module(session: AsyncSession, module_create: ModuleCreate) -> Module:
-    module = Module(**module_create.model_dump())
-    session.add(module)
+async def update_module(
+        session: AsyncSession,
+        module: Module,
+        module_update: ModuleUpdate
+) -> Module:
+    for name, value in module_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(module, name, value)
+        print(module)
     await session.commit()
     return module
-
 
 async def delete_modules(session: AsyncSession, modules: list[Module]) -> None:
     # module = Module(id=id)
@@ -52,17 +64,7 @@ async def delete_module_by_id(session: AsyncSession, id: int) -> None:
     await session.delete(module)
     await session.commit()
 
-async def update_module(
-        session: AsyncSession,
-        module: Module,
-        module_update: ModuleUpdate
-) -> Module:
-    for name, value in module_update.model_dump(exclude_unset=True).items():
-        print(name, value)
-        setattr(module, name, value)
-        print(module)
-    await session.commit()
-    return module
+
 
 async def main():
     async with db_helper.session_factory() as session:

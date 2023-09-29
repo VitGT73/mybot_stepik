@@ -23,6 +23,9 @@ async def create_course(session: AsyncSession, course_create: CourseCreate) -> C
     return course
 
 
+async def get_course(session: AsyncSession, course_id: int) -> Course | None:
+    return await session.get(Course, course_id)
+
 async def get_all_courses(session: AsyncSession) -> list[Course]:
     stmt = select(Course).order_by(Course.id)
     result: Result = await session.execute(statement=stmt)
@@ -30,24 +33,10 @@ async def get_all_courses(session: AsyncSession) -> list[Course]:
     return list(courses)
 
 
-async def get_course(session: AsyncSession, course_id: int) -> Course | None:
-    return await session.get(Course, course_id)
-
-
-async def delete_course(session: AsyncSession, course: Course) -> None:
-    await session.delete(course)
-    await session.commit()
-
-async def delete_module_by_id(session: AsyncSession, id: int) -> None:
-    course = await session.get(Course, id)
-    await session.delete(course)
-    await session.commit()
-
-
-async def delete_all_courses(session: AsyncSession) -> None:
-    stmt = delete(Course)
-    await session.execute(stmt)
-    await session.commit()
+async def get_course_by_title(session: AsyncSession, title: str) -> Course | None:
+    stmt = select(Course).where(Course.title == title)
+    course: Course | None = await session.scalar(statement=stmt)
+    return course
 
 
 async def update_course(
@@ -61,6 +50,23 @@ async def update_course(
         print(course)
     await session.commit()
     return course
+
+
+async def delete_course(session: AsyncSession, course: Course) -> None:
+    await session.delete(course)
+    await session.commit()
+
+
+async def delete_module_by_id(session: AsyncSession, id: int) -> None:
+    course = await session.get(Course, id)
+    await session.delete(course)
+    await session.commit()
+
+
+async def delete_all_courses(session: AsyncSession) -> None:
+    stmt = delete(Course)
+    await session.execute(stmt)
+    await session.commit()
 
 
 async def main():

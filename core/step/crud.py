@@ -24,6 +24,14 @@ from core.models import Step, db_helper
 from core.step import StepSchema, StepCreate, StepUpdate
 
 
+
+async def create_step(session: AsyncSession, step_create: StepCreate) -> Step:
+    step = Step(**step_create.model_dump())
+    session.add(step)
+    await session.commit()
+    return step
+
+
 async def get_all_steps(session: AsyncSession) -> list[Step]:
     stmt = select(Step).order_by(Step.id)
     result: Result = await session.execute(statement=stmt)
@@ -35,12 +43,18 @@ async def get_step(session: AsyncSession, module_id: int) -> Step | None:
     return await session.get(Step, module_id)
 
 
-async def create_step(session: AsyncSession, step_create: StepCreate) -> Step:
-    step = Step(**step_create.model_dump())
-    session.add(step)
+
+async def update_step(
+        session: AsyncSession,
+        step: Step,
+        step_update: StepUpdate
+) -> Step:
+    for name, value in step_update.model_dump(exclude_unset=True).items():
+        print(name, value)
+        setattr(step, name, value)
+        print(step)
     await session.commit()
     return step
-
 
 async def delete_steps(session: AsyncSession, steps: list[Step]) -> None:
     # module = Module(id=id)
@@ -57,17 +71,7 @@ async def delete_step_by_id(session: AsyncSession, id: int) -> None:
     await session.commit()
 
 
-async def update_step(
-        session: AsyncSession,
-        step: Step,
-        step_update: StepUpdate
-) -> Step:
-    for name, value in step_update.model_dump(exclude_unset=True).items():
-        print(name, value)
-        setattr(step, name, value)
-        print(step)
-    await session.commit()
-    return step
+
 
 async def main():
     async with db_helper.session_factory() as session:
