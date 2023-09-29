@@ -1,3 +1,17 @@
+# op.create_table(
+#     "lessons",
+#     sa.Column("url", sa.String(length=2083), nullable=False),
+#     sa.Column("module_id", sa.Integer(), nullable=False),
+#     sa.Column("id", sa.Integer(), nullable=False),
+#     sa.Column("last_update", sa.DateTime(), nullable=True),
+#     sa.Column("title", sa.String(length=60), nullable=False),
+#     sa.ForeignKeyConstraint(
+#         ["module_id"],
+#         ["modules.id"],
+#     ),
+#     sa.PrimaryKeyConstraint("id"),
+#     sa.UniqueConstraint("title"),
+# )
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer

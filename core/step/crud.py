@@ -19,10 +19,9 @@ import asyncio
 
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from sqlalchemy.orm import joinedload
 from core.models import Step, db_helper
 from core.step import StepSchema, StepCreate, StepUpdate
-
 
 
 async def create_step(session: AsyncSession, step_create: StepCreate) -> Step:
@@ -34,14 +33,20 @@ async def create_step(session: AsyncSession, step_create: StepCreate) -> Step:
 
 async def get_all_steps(session: AsyncSession) -> list[Step]:
     stmt = select(Step).order_by(Step.id)
-    result: Result = await session.execute(statement=stmt)
-    steps = result.scalars().all()
+    # result: Result = await session.execute(statement=stmt)
+    # steps = result.scalars().all()
+    steps = await session.scalars(statement=stmt)
     return list(steps)
 
 
 async def get_step(session: AsyncSession, module_id: int) -> Step | None:
     return await session.get(Step, module_id)
 
+
+async def get_step_with_solution(session: AsyncSession) -> list[Step]:
+    stmt = select(Step).options(joinedload(Step.solution)).order_by(Step.id)
+    steps = await session.scalars(statement=stmt)
+    return list(steps)
 
 
 async def update_step(
@@ -50,11 +55,10 @@ async def update_step(
         step_update: StepUpdate
 ) -> Step:
     for name, value in step_update.model_dump(exclude_unset=True).items():
-        print(name, value)
         setattr(step, name, value)
-        print(step)
     await session.commit()
     return step
+
 
 async def delete_steps(session: AsyncSession, steps: list[Step]) -> None:
     # module = Module(id=id)
@@ -69,8 +73,6 @@ async def delete_step_by_id(session: AsyncSession, id: int) -> None:
     step = await session.get(Step, id)
     await session.delete(step)
     await session.commit()
-
-
 
 
 async def main():

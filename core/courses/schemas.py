@@ -1,4 +1,14 @@
 # https://youtu.be/KWu_RyTKh1s?t=2145
+
+# op.create_table(
+#     "courses",
+#     sa.Column("url", sa.String(length=2083), nullable=False),
+#     sa.Column("id", sa.Integer(), nullable=False),
+#     sa.Column("last_update", sa.DateTime(), nullable=True),
+#     sa.Column("title", sa.String(length=60), nullable=False),
+#     sa.PrimaryKeyConstraint("id"),
+#     sa.UniqueConstraint("title"),
+# )
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer

@@ -22,15 +22,6 @@ class Base(DeclarativeBase):
         return f"{cls.__name__.lower()}s"
 
 
-# class BaseHeader(Base):
-#     __abstract__ = True
-#
-#     title: Mapped[str] = mapped_column(String(60),unique=True)
-#     last_update: Mapped[datetime | None]
-#
-#     def __str__(self):
-#         return f"{self.__class__.__name__} (id={self.id!r}, title={self.title!r}, last_update={self.last_update!r})"
-
 class TitleMixin:
     @declared_attr
     def title(cls) -> Mapped[str]:

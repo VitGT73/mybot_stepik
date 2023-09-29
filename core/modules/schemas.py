@@ -1,3 +1,16 @@
+# op.create_table(
+#     "modules",
+#     sa.Column("course_id", sa.Integer(), nullable=False),
+#     sa.Column("id", sa.Integer(), nullable=False),
+#     sa.Column("last_update", sa.DateTime(), nullable=True),
+#     sa.Column("title", sa.String(length=60), nullable=False),
+#     sa.ForeignKeyConstraint(
+#         ["course_id"],
+#         ["courses.id"],
+#     ),
+#     sa.PrimaryKeyConstraint("id"),
+#     sa.UniqueConstraint("title"),
+# )
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
