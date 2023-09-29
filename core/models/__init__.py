@@ -7,7 +7,8 @@ __all__ = (
     "Module",
     "Lesson",
     "Step",
-    "StepType"
+    "StepType",
+    "Solution"
 )
 
 from .course import Course
@@ -17,3 +18,4 @@ from .step import Step
 from .step_types import StepType
 from .lesson import Lesson
 from .db_helper import DatabaseHelper, db_helper
+from .solutions import Solution

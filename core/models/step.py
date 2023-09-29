@@ -8,6 +8,8 @@ from .base import Base, BaseHeader
 
 if TYPE_CHECKING:
     from core.models.lesson import Lesson
+    from core.models.step_types import StepType
+    from core.models.solutions import Solution
 
 
 class Step(BaseHeader):
@@ -16,12 +18,14 @@ class Step(BaseHeader):
     number: Mapped[int]
     url: Mapped[str] = mapped_column(String(2083))
     image: Mapped[LargeBinary] = mapped_column(LargeBinary)
-    # course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
-    # module_id: Mapped[int] = mapped_column(ForeignKey("modules.id"))
     lesson_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
 
-    # course: Mapped["Course"] = relationship(back_populates="step")
-    # module: Mapped["Module"] = relationship(back_populates="step")
     lesson: Mapped["Lesson"] = relationship(back_populates="step")
+    step_type: Mapped["StepType"] = relationship(back_populates="step")
+    solution: Mapped["Solution"] = relationship(
+        back_populates="step",
+        cascade="all, delete-orphan"
+    )
+
 
 
