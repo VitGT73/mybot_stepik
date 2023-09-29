@@ -1,10 +1,9 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
-from sqlalchemy.types import String, LargeBinary
+from sqlalchemy.types import String
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
-from .base import Base, BaseHeader
+from .base import Base
 
 if TYPE_CHECKING:
     from core.models.step import Step

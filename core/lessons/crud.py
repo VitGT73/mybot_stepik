@@ -17,7 +17,7 @@ from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Lesson, db_helper
-from core.lesson import LessonCreate, LessonUpdate, LessonSchema
+from core.lessons import LessonCreate, LessonUpdate, LessonSchema
 
 
 

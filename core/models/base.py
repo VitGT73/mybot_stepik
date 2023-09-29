@@ -21,13 +21,23 @@ class Base(DeclarativeBase):
     def __tablename__(cls) -> str:
         return f"{cls.__name__.lower()}s"
 
-#
-#
-class BaseHeader(Base):
-    __abstract__ = True
 
-    title: Mapped[str] = mapped_column(String(60),unique=True)
-    last_update: Mapped[datetime | None]
+# class BaseHeader(Base):
+#     __abstract__ = True
+#
+#     title: Mapped[str] = mapped_column(String(60),unique=True)
+#     last_update: Mapped[datetime | None]
+#
+#     def __str__(self):
+#         return f"{self.__class__.__name__} (id={self.id!r}, title={self.title!r}, last_update={self.last_update!r})"
 
-    def __str__(self):
-        return f"{self.__class__.__name__} (id={self.id!r}, title={self.title!r}, last_update={self.last_update!r})"
+class TitleMixin:
+    @declared_attr
+    def title(cls) -> Mapped[str]:
+        return mapped_column(String(60), unique=True)
+
+
+class LastUpdateMixin:
+    @declared_attr
+    def last_update(cls) -> Mapped[datetime | None]:
+        return mapped_column()

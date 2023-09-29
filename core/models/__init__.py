@@ -2,18 +2,19 @@ __all__ = (
     "db_helper",
     "DatabaseHelper",
     "Base",
-    "BaseHeader",
     "Course",
     "Module",
     "Lesson",
     "Step",
     "StepType",
-    "Solution"
+    "Solution",
+    "TitleMixin",
+    "LastUpdateMixin"
 )
 
 from .course import Course
 from .module import Module
-from .base import Base, BaseHeader
+from .base import Base, TitleMixin, LastUpdateMixin
 from .step import Step
 from .step_types import StepType
 from .lesson import Lesson
