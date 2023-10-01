@@ -53,18 +53,18 @@ async def update_step_types(
     await session.commit()
     return step_types
 
-async def delete_modules(session: AsyncSession, modules: list[Module]) -> None:
+async def delete_step_types(session: AsyncSession, step_types: list[StepType]) -> None:
     # module = Module(id=id)
     # x = await session.get(ident=id)
-    await session.delete(modules)
+    await session.delete(step_types)
     await session.commit()
 
 
-async def delete_module_by_id(session: AsyncSession, id: int) -> None:
+async def delete_step_types_by_id(session: AsyncSession, id: int) -> None:
     # module = Module(id=id)
     # x = await session.get(ident=id)
-    module = await session.get(Module, id)
-    await session.delete(module)
+    step_types = await session.get(StepType, id)
+    await session.delete(step_types)
     await session.commit()
 
 
@@ -74,7 +74,7 @@ async def main():
     async with db_helper.session_factory() as session:
         step_names = ("review", "easy-quiz", "hard-quiz", "blank")
         for name in step_names:
-            await add_step_type(session=session, name=name)
+            await create_step_type(session=session, name=name)
 
 
 if __name__ == "__main__":

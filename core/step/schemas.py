@@ -26,10 +26,10 @@ from sqlalchemy import LargeBinary
 
 
 class StepBase(BaseModel):
-    title: str | None = None
     number: int
     url: HttpUrl
     image: LargeBinary
+    step_type_id: int
     lesson_id: int
     last_update: datetime | None = None
 
@@ -39,10 +39,10 @@ class StepCreate(StepBase):
 
 
 class StepUpdate(BaseModel):
-    title: str | None = None
     number: int | None = None
     url: HttpUrl | None = None
     image: LargeBinary | None = None
+    step_type_id: int | None = None
     lesson_id: int | None = None
     last_update: datetime | None = None
 
