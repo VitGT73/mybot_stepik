@@ -16,89 +16,73 @@ from core.courses import CourseUpdate, CourseCreate
 from core.models import Course, db_helper
 
 
-async def create_course(session: AsyncSession, course_create: CourseCreate) -> Course:
-    course = Course(**course_create.model_dump())
-    session.add(course)
-    await session.commit()
-    return course
+class Courses:
+    @classmethod
+    async def create(cls, session: AsyncSession, course_create: CourseCreate) -> Course:
+        course = Course(**course_create.model_dump())
+        session.add(course)
+        await session.commit()
+        return course
+
+    @classmethod
+    async def get(cls, session: AsyncSession, course_id: int) -> Course | None:
+        return await session.get(Course, course_id)
+
+    @classmethod
+    async def get_all(cls, session: AsyncSession) -> list[Course]:
+        stmt = select(Course).order_by(Course.id)
+        result: Result = await session.execute(statement=stmt)
+        courses = result.scalars().all()
+        return list(courses)
+
+    @classmethod
+    async def get_by_title(cls, session: AsyncSession, title: str) -> Course | None:
+        stmt = select(Course).where(Course.title == title)
+        course: Course | None = await session.scalar(statement=stmt)
+        return course
+
+    @classmethod
+    async def update(cls, session: AsyncSession, course_id: int,
+                     course_update: CourseUpdate) -> Course:
+        course = await cls.get(session=session, course_id=course_id)
+        for name, value in course_update.model_dump(exclude_unset=True).items():
+            setattr(course, name, value)
+        await session.commit()
+        return course
+
+    @classmethod
+    async def delete(cls, session: AsyncSession, course_id: int) -> None:
+        course = await session.get(Course, course_id)
+        await session.delete(course)
+        await session.commit()
+
+    @classmethod
+    async def delete_all(cls, session: AsyncSession) -> None:
+        stmt = delete(Course)
+        await session.execute(stmt)
+        await session.commit()
 
 
-async def get_course(session: AsyncSession, course_id: int) -> Course | None:
-    return await session.get(Course, course_id)
+async def add_courses(session: AsyncSession):
+    start_courses = (
+        ("Добрый, добрый Python - обучающий курс от Сергея Балакирева", "https://stepik.org/course/100707"),
+        ("Поколение Python: курс для начинающих", "https://stepik.org/course/58852"),
+        ("Поколение Python: курс для продвинутых", "https://stepik.org/course/68343"),
+        ("Инди-курс программирования на Python", "https://stepik.org/course/63085"),
+    )
 
-
-async def get_all_courses(session: AsyncSession) -> list[Course]:
-    stmt = select(Course).order_by(Course.id)
-    result: Result = await session.execute(statement=stmt)
-    courses = result.scalars().all()
-    return list(courses)
-
-
-async def get_course_by_title(session: AsyncSession, title: str) -> Course | None:
-    stmt = select(Course).where(Course.title == title)
-    course: Course | None = await session.scalar(statement=stmt)
-    return course
-
-
-async def update_course(
-        session: AsyncSession,
-        course: Course,
-        course_update: CourseUpdate,
-) -> Course:
-    for name, value in course_update.model_dump(exclude_unset=True).items():
-        print(name, value)
-        setattr(course, name, value)
-        print(course)
-    await session.commit()
-    return course
-
-
-async def delete_course(session: AsyncSession, course: Course) -> None:
-    await session.delete(course)
-    await session.commit()
-
-
-async def delete_module_by_id(session: AsyncSession, module_id: int) -> None:
-    course = await session.get(Course, module_id)
-    await session.delete(course)
-    await session.commit()
-
-
-async def delete_all_courses(session: AsyncSession) -> None:
-    stmt = delete(Course)
-    await session.execute(stmt)
-    await session.commit()
-
-
-# start_courses = (
-#     ("Добрый, добрый Python - обучающий курс от Сергея Балакирева", "https://stepik.org/course/100707"),
-#     ("Поколение Python: курс для начинающих", "https://stepik.org/course/58852"),
-#     ("Поколение Python: курс для продвинутых", "https://stepik.org/course/68343"),
-#     ("Инди-курс программирования на Python", "https://stepik.org/course/63085"),
-# )
-
-async def add_courses(courses: tuple):
-    async with db_helper.session_factory() as session:
-        for course in courses:
-            course_create = CourseCreate(
-                title=course[0],
-                url=course[1],
-            )
-            await create_course(session,course_create)
+    for course in start_courses:
+        course_create = CourseCreate(
+            title=course[0],
+            url=course[1],
+        )
+        await Courses.create(session, course_create)
 
 
 async def main():
-    pass
-    # await add_courses(start_courses)
-
-
-    # async with db_helper.session_factory() as session:
-    #     for course in start_courses:
-    #         course_create = CourseCreate(
-    #             title=course[0],
-    #             url=course[1],
-    #         )
-    #         await create_course(session,course_create)
+    async with db_helper.session_factory() as session:
+        await Courses.delete_all(session=session)
+        await add_courses(session)
 
 if __name__ == "__main__":
     asyncio.run(main())

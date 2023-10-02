@@ -57,15 +57,19 @@ class StepTypes:
         await session.commit()
 
 
+async def add_step_types(session: AsyncSession):
+    step_names = ("review", "easy-quiz", "hard-quiz", "blank")
+    for name in step_names:
+        step_types = StepTypeCreate(
+            name=name,
+        )
+        await StepTypes.create(session=session, step_type_create=step_types)
+
+
 async def main():
     async with db_helper.session_factory() as session:
         await StepTypes.delete_all(session=session)
-        step_names = ("review", "easy-quiz", "hard-quiz", "blank")
-        for name in step_names:
-            step_types = StepTypeCreate(
-                name=name,
-            )
-            await StepTypes.create(session=session, step_type_create=step_types)
+        await add_step_types(session=session)
 
 
 if __name__ == "__main__":
