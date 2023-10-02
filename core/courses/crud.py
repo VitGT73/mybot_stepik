@@ -26,6 +26,7 @@ async def create_course(session: AsyncSession, course_create: CourseCreate) -> C
 async def get_course(session: AsyncSession, course_id: int) -> Course | None:
     return await session.get(Course, course_id)
 
+
 async def get_all_courses(session: AsyncSession) -> list[Course]:
     stmt = select(Course).order_by(Course.id)
     result: Result = await session.execute(statement=stmt)
@@ -57,8 +58,8 @@ async def delete_course(session: AsyncSession, course: Course) -> None:
     await session.commit()
 
 
-async def delete_module_by_id(session: AsyncSession, id: int) -> None:
-    course = await session.get(Course, id)
+async def delete_module_by_id(session: AsyncSession, module_id: int) -> None:
+    course = await session.get(Course, module_id)
     await session.delete(course)
     await session.commit()
 
@@ -69,23 +70,35 @@ async def delete_all_courses(session: AsyncSession) -> None:
     await session.commit()
 
 
-async def main():
+# start_courses = (
+#     ("Добрый, добрый Python - обучающий курс от Сергея Балакирева", "https://stepik.org/course/100707"),
+#     ("Поколение Python: курс для начинающих", "https://stepik.org/course/58852"),
+#     ("Поколение Python: курс для продвинутых", "https://stepik.org/course/68343"),
+#     ("Инди-курс программирования на Python", "https://stepik.org/course/63085"),
+# )
+
+async def add_courses(courses: tuple):
     async with db_helper.session_factory() as session:
-        upd_course = CourseUpdate(
-            url="https://www.google.com",
-            title="Yandex!!!",
-        )
-        # lst = await get_courses(session=session)
-        # print(lst)
-        course = await get_course(session, 1)
-        # print(course)
-        course = await update_course(session, course, upd_course)
-        # print(course)
-        # record = ("1.1 ВВедение",1)
-        # await add_module(session=session, title=record[0],course_id= record[1])
+        for course in courses:
+            course_create = CourseCreate(
+                title=course[0],
+                url=course[1],
+            )
+            await create_course(session,course_create)
 
-        # await delete_all_courses(session=session)
 
+async def main():
+    pass
+    # await add_courses(start_courses)
+
+
+    # async with db_helper.session_factory() as session:
+    #     for course in start_courses:
+    #         course_create = CourseCreate(
+    #             title=course[0],
+    #             url=course[1],
+    #         )
+    #         await create_course(session,course_create)
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -1,7 +1,9 @@
 __all__ = [
     "CourseUpdate",
     "CourseSchema",
-    "CourseCreate"
+    "CourseCreate",
+    "create_course"
 ]
 
-from schemas import CourseUpdate, CourseSchema, CourseCreate
+from .schemas import CourseUpdate, CourseSchema, CourseCreate
+from.crud import create_course

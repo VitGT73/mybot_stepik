@@ -12,10 +12,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class StepTypeBase(BaseModel):
-    title: str
-    course_id: int
-
-    last_update: datetime | None = None
+    name: str
 
 
 class StepTypeCreate(StepTypeBase):
@@ -23,9 +20,7 @@ class StepTypeCreate(StepTypeBase):
 
 
 class StepTypeUpdate(BaseModel):
-    title: str | None = None
-    course_id: int | None = None
-    last_update: datetime | None = None
+    name: str | None = None
 
 
 class StepTypeSchema(StepTypeBase):

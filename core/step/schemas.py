@@ -33,6 +33,10 @@ class StepBase(BaseModel):
     lesson_id: int
     last_update: datetime | None = None
 
+    @field_serializer('url')
+    def serialize_url(self, url: HttpUrl):
+        return str(self.url)
+
 
 class StepCreate(StepBase):
     pass
