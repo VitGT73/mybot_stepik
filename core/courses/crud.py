@@ -82,7 +82,7 @@ async def add_courses(session: AsyncSession):
 async def main():
     async with db_helper.session_factory() as session:
         await Courses.delete_all(session=session)
-        await add_courses(session)
+        # await add_courses(session)
 
 if __name__ == "__main__":
     asyncio.run(main())
