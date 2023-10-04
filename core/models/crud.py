@@ -51,14 +51,7 @@ class BaseCRUD:
         await session.commit()
 
 
-class Courses(BaseCRUD):
-    ModelClass = Course
 
-    @classmethod
-    async def get_by_title(cls, session: AsyncSession, title: str) -> ModelClass | None:
-        stmt = select(cls.ModelClass).where(cls.ModelClass.title == title)
-        item: cls.ModelClass | None = await session.scalar(statement=stmt)
-        return item
 
 
 class StepTypes(BaseCRUD):

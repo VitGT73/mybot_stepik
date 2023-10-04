@@ -9,7 +9,8 @@ __all__ = (
     "StepType",
     "Solution",
     "TitleMixin",
-    "LastUpdateMixin"
+    "LastUpdateMixin",
+    "BaseCRUD"
 )
 
 from .course import Course
@@ -20,3 +21,4 @@ from .step_types import StepType
 from .lesson import Lesson
 from .db_helper import DatabaseHelper, db_helper
 from .solutions import Solution
+from .crud import BaseCRUD
