@@ -3,8 +3,7 @@ import asyncio
 from sqlalchemy import select, delete
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.courses import CourseUpdate, CourseCreate
-from core.models import Course, db_helper, StepType
+from core.models import db_helper
 
 
 class BaseCRUD:
@@ -17,12 +16,6 @@ class BaseCRUD:
         session.add(item)
         await session.commit()
         return item
-
-    @classmethod
-    async def delete_all(cls, session: AsyncSession) -> None:
-        stmt = delete(cls.ModelClass)
-        await session.execute(stmt)
-        await session.commit()
 
     @classmethod
     async def get(cls, session: AsyncSession, item_id: int):
@@ -50,36 +43,16 @@ class BaseCRUD:
         await session.delete(item)
         await session.commit()
 
-
-
-
-
-class StepTypes(BaseCRUD):
-    ModelClass = StepType
-
-
-async def add_courses(session: AsyncSession):
-    start_courses = (
-        ("Добрый, добрый Python - обучающий курс от Сергея Балакирева", "https://stepik.org/course/100707"),
-        ("Поколение Python: курс для начинающих", "https://stepik.org/course/58852"),
-        ("Поколение Python: курс для продвинутых", "https://stepik.org/course/68343"),
-        ("Инди-курс программирования на Python", "https://stepik.org/course/63085"),
-    )
-
-    for course in start_courses:
-        course_create = CourseCreate(
-            title=course[0],
-            url=course[1],
-        )
-        await Courses.create(session, course_create)
+    @classmethod
+    async def delete_all(cls, session: AsyncSession) -> None:
+        stmt = delete(cls.ModelClass)
+        await session.execute(stmt)
+        await session.commit()
 
 
 async def main():
     async with db_helper.session_factory() as session:
-        await Courses.delete_all(session=session)
-        await add_courses(session)
-        aaa = await Courses.get(session, 2)
-        print(aaa)
+        pass
 
 
 if __name__ == "__main__":
