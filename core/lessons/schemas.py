@@ -12,9 +12,16 @@
 #     sa.PrimaryKeyConstraint("id"),
 #     sa.UniqueConstraint("title"),
 # )
+
+# from typing import TYPE_CHECKING
+
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer
+
+#
+# if TYPE_CHECKING:
+#     from core.step import StepSchema
 
 
 class LessonBase(BaseModel):
@@ -26,6 +33,10 @@ class LessonBase(BaseModel):
 
 class LessonCreate(LessonBase):
     pass
+
+
+# class LessonWithSteps(LessonBase):
+#     steps: list[StepSchema]
 
 
 class LessonUpdate(BaseModel):

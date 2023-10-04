@@ -15,6 +15,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.step_types import StepTypeUpdate, StepTypeCreate
 
 
+class StepTypes(BaseCRUD):
+    ModelClass = StepType
+
 class StepTypes:
 
     @classmethod
