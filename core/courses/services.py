@@ -9,16 +9,17 @@ from core.courses import Courses
 
 async def add_courses(session: AsyncSession):
     start_courses = (
-        ("Добрый, добрый Python - обучающий курс от Сергея Балакирева", "https://stepik.org/course/100707"),
-        ("Поколение Python: курс для начинающих", "https://stepik.org/course/58852"),
-        ("Поколение Python: курс для продвинутых", "https://stepik.org/course/68343"),
-        ("Инди-курс программирования на Python", "https://stepik.org/course/63085"),
+        ("Добрый, добрый Python - обучающий курс от Сергея Балакирева", "https://stepik.org/course/100707", 100707),
+        ("Поколение Python: курс для начинающих", "https://stepik.org/course/58852", 58852),
+        ("Поколение Python: курс для продвинутых", "https://stepik.org/course/68343", 68343),
+        ("Инди-курс программирования на Python", "https://stepik.org/course/63085", 63085),
     )
 
     for course in start_courses:
         course_create = CourseCreate(
             title=course[0],
             url=course[1],
+            stepik_id=course[2]
         )
         await Courses.create(session, course_create)
 

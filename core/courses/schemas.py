@@ -16,6 +16,7 @@ from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer
 
 class CursesBase(BaseModel):
     title: str
+    stepik_id : int
     url: str
     last_update: datetime | None = None
 
@@ -26,6 +27,7 @@ class CourseCreate(CursesBase):
 
 class CourseUpdate(BaseModel):
     title: str | None = None
+    stepik_id: int | None = None
     url: HttpUrl
     last_update: datetime | None = None
 
