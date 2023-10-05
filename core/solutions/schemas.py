@@ -14,12 +14,12 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import LargeBinary
+# from sqlalchemy import LargeBinary
 
 
 class SolutionBase(BaseModel):
     code: int | None = None
-    image: LargeBinary |None = None
+    image: bytes | None = None
     step_id: int
     last_update: datetime | None = None
 
@@ -30,7 +30,7 @@ class SolutionCreate(SolutionBase):
 
 class SolutionUpdate(BaseModel):
     code: int | None = None
-    image: LargeBinary |None = None
+    image: bytes | None = None
     step_id: int
     last_update: datetime | None = None
 
@@ -39,3 +39,25 @@ class SolutionSchema(SolutionBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+
+
+# class SolutionBase(BaseModel):
+#     code: int = None
+#     image: bytes = None
+#     step_id: int
+#     last_update: datetime = None
+#
+#
+# class SolutionCreate(SolutionBase):
+#     pass
+#
+#
+# class SolutionUpdate(BaseModel):
+#     code: int = None
+#     image: bytes = None
+#     step_id: int
+#     last_update: datetime = None
+#
+#
+# class SolutionSchema(SolutionBase):
+#     id: int

@@ -20,15 +20,13 @@
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer
-
-from sqlalchemy import LargeBinary
+from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer, FilePath
 
 
 class StepBase(BaseModel):
     number: int
     url: HttpUrl
-    image: LargeBinary
+    image: FilePath
     step_type_id: int
     lesson_id: int
     last_update: datetime | None = None
@@ -45,7 +43,7 @@ class StepCreate(StepBase):
 class StepUpdate(BaseModel):
     number: int | None = None
     url: HttpUrl | None = None
-    image: LargeBinary | None = None
+    image: bytes | None = None
     step_type_id: int | None = None
     lesson_id: int | None = None
     last_update: datetime | None = None

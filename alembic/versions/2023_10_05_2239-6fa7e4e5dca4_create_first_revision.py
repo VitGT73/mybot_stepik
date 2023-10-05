@@ -1,8 +1,8 @@
 """Create first revision
 
-Revision ID: 972acb5498f3
+Revision ID: 6fa7e4e5dca4
 Revises: 
-Create Date: 2023-10-04 23:18:36.761057
+Create Date: 2023-10-05 22:39:12.633400
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "972acb5498f3"
+revision: str = "6fa7e4e5dca4"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -69,7 +69,7 @@ def upgrade() -> None:
         "steps",
         sa.Column("number", sa.Integer(), nullable=False),
         sa.Column("url", sa.String(length=2083), nullable=False),
-        sa.Column("image", sa.LargeBinary(), nullable=False),
+        sa.Column("image", sa.String(length=255), nullable=False),
         sa.Column("lesson_id", sa.Integer(), nullable=False),
         sa.Column("step_type_id", sa.Integer(), nullable=False),
         sa.Column("id", sa.Integer(), nullable=False),
@@ -87,7 +87,7 @@ def upgrade() -> None:
     op.create_table(
         "solutions",
         sa.Column("step_id", sa.Integer(), nullable=False),
-        sa.Column("image", sa.LargeBinary(), nullable=False),
+        sa.Column("image", sa.String(length=255), nullable=False),
         sa.Column("code", sa.Text(), nullable=False),
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("last_update", sa.DateTime(), nullable=True),

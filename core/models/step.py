@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
-from sqlalchemy.types import String, LargeBinary
+from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 from .base import Base, LastUpdateMixin
@@ -17,7 +16,7 @@ class Step(Base, LastUpdateMixin):
 
     number: Mapped[int]
     url: Mapped[str] = mapped_column(String(2083))
-    image: Mapped[LargeBinary] = mapped_column(LargeBinary)
+    image: Mapped[str] = mapped_column(String(255))
     lesson_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
     step_type_id: Mapped[int] = mapped_column(ForeignKey("step_types.id"))
 

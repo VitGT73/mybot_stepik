@@ -17,72 +17,41 @@
 
 import asyncio
 
-from sqlalchemy import select, Result
+from sqlalchemy import select, Result, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from core.models import Step, db_helper
+from core.models import Step, db_helper, BaseCRUD
 from core.step import StepSchema, StepCreate, StepUpdate
 
 
-async def create_step(session: AsyncSession, step_create: StepCreate) -> Step:
-    step = Step(**step_create.model_dump())
-    session.add(step)
-    await session.commit()
-    return step
+class Steps(BaseCRUD):
+    ModelClass = Step
 
 
-async def get_all_steps(session: AsyncSession) -> list[Step]:
-    stmt = select(Step).order_by(Step.id)
-    # result: Result = await session.execute(statement=stmt)
-    # steps = result.scalars().all()
-    steps = await session.scalars(statement=stmt)
-    return list(steps)
+    # @staticmethod
+    # async def get_step_with_solution(session: AsyncSession) -> list[Step]:
+    #     stmt = select(Step).options(joinedload(Step.solution)).order_by(Step.id)
+    #     steps = await session.scalars(statement=stmt)
+    #     return list(steps)
 
 
-async def get_step(session: AsyncSession, module_id: int) -> Step | None:
-    return await session.get(Step, module_id)
+    @staticmethod
+    async def delete_by_lesson_id(session: AsyncSession, lesson_id: int) -> None:
+        stmt = delete(Step).where(Step.lesson_id == lesson_id)
+        await session.execute(stmt)
+        await session.commit()
 
+    @staticmethod
+    async def create_many(session: AsyncSession, step_create: list[Step]) -> list[Step]:
+        session.add_all(step_create)
+        await session.commit()
+        return step_create
 
-async def get_step_with_solution(session: AsyncSession) -> list[Step]:
-    stmt = select(Step).options(joinedload(Step.solution)).order_by(Step.id)
-    steps = await session.scalars(statement=stmt)
-    return list(steps)
-
-
-async def update_step(
-        session: AsyncSession,
-        step: Step,
-        step_update: StepUpdate
-) -> Step:
-    for name, value in step_update.model_dump(exclude_unset=True).items():
-        setattr(step, name, value)
-    await session.commit()
-    return step
-
-
-async def delete_steps(session: AsyncSession, steps: list[Step]) -> None:
-    # module = Module(id=id)
-    # x = await session.get(ident=id)
-    await session.delete(steps)
-    await session.commit()
-
-
-async def delete_step_by_id(session: AsyncSession, id: int) -> None:
-    # module = Module(id=id)
-    # x = await session.get(ident=id)
-    step = await session.get(Step, id)
-    await session.delete(step)
-    await session.commit()
 
 
 async def main():
     async with db_helper.session_factory() as session:
-        step = StepCreate(title="1.1 Урок ВВедение", url="https://ya.ru", lesson_id=1)
-        await create_step(session=session, step_create=step)
-        # await delete_module_by_id(session=session, id=1)
-        get_lessons = await get_all_steps(session=session)
-        # await delete_modules(session=session, modules=get_modules)
-        print(get_lessons)
+        pass
 
 
 if __name__ == "__main__":

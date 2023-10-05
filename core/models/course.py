@@ -11,18 +11,15 @@ if TYPE_CHECKING:
 class Course(Base, LastUpdateMixin, TitleMixin):
     __tablename__ = "courses"
 
+    stepik_id: Mapped[int] = mapped_column(unique=True)
     url: Mapped[str] = mapped_column(String(2083))
-
     module: Mapped[list["Module"]] = relationship(
         back_populates="course", cascade="all, delete-orphan"
     )
 
     def __str__(self):
         return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, " \
-               f"url={self.url!r}, last_update={self.last_update!r})"
-    # lesson: Mapped[list["Lesson"]] = relationship(
-    #     back_populates="course", cascade="all, delete-orphan"
-    # )
-    # step: Mapped[list["Step"]] = relationship(
-    #     back_populates="course", cascade="all, delete-orphan"
-    # )
+               f"number={self.stepik_id!r}, url={self.url!r}, last_update={self.last_update!r})"
+
+        # return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, " \
+        #        f"number={self.stepik_id!r}, url={self.url!r}, last_update={self.last_update!r})"
