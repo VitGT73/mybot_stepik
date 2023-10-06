@@ -1,0 +1,4 @@
+# Это тестовые файлы
+.gitignore!
+/put_test_data_to_tables.py
+/test_data.py
