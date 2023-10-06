@@ -20,12 +20,13 @@ import asyncio
 from sqlalchemy import select, Result, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from core.models import Step, db_helper, BaseCRUD
+from core.models import Step, db_helper, BaseCRUD, Lesson, Module, Course
 from core.step import StepSchema, StepCreate, StepUpdate
 
 
 class Steps(BaseCRUD):
     ModelClass = Step
+    CreateClass = StepCreate
 
 
     # @staticmethod
@@ -47,11 +48,14 @@ class Steps(BaseCRUD):
         await session.commit()
         return step_create
 
-
-
+    # @staticmethod
+    # async def gen_image_name(sessinon: AsyncSession, step_id: int):
+    #     stmt = select(Step).option(joinedload(Step.lesson)).where(Step.id == step_id)
+    #     step = await sessinon.scalar(stmt)
+    #     return step
 async def main():
     async with db_helper.session_factory() as session:
-        pass
+        await Steps.delete_all(session=session)
 
 
 if __name__ == "__main__":

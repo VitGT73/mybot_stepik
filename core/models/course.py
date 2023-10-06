@@ -10,9 +10,9 @@ if TYPE_CHECKING:
 
 class Course(Base, LastUpdateMixin, TitleMixin):
     __tablename__ = "courses"
-
-    stepik_id: Mapped[int] = mapped_column(unique=True)
+    stepik_id: Mapped[int] = mapped_column(unique=True, sort_order=-5)
     url: Mapped[str] = mapped_column(String(2083))
+
     module: Mapped[list["Module"]] = relationship(
         back_populates="course", cascade="all, delete-orphan"
     )

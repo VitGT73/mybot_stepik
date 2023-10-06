@@ -26,4 +26,4 @@ class Lesson(Base, LastUpdateMixin, TitleMixin):
 
     def __str__(self):
         return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, url={self.url!r}, " \
-               f"last_update={self.last_update!r}, id={self.module_id!r})"
+               f"last_update={self.last_update!r})"

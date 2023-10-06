@@ -3,3 +3,4 @@
 /bot/log/
 /venv
 /bot/images_temp/
+!/tests/

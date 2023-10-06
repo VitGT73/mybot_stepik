@@ -9,9 +9,9 @@ from core.models import Lesson, db_helper, BaseCRUD
 from core.lessons import LessonCreate, LessonUpdate, Lessons
 
 start_lessons = (
-    ("1.1  Как правильно проходить этот курс", "www.ya.ru", 1),
-    ("1.2  Первое знакомство с Python. Порядок установки", "www.ya.ru", 1),
-    ("1.3  Варианты выполнения команд. Переходим в PyCharm", "www.ya.ru", 1),
+    ("1.1  Как правильно проходить этот курс", "https://www.mail.ru", 1),
+    ("1.2  Первое знакомство с Python. Порядок установки", "https://www.mail.ru", 1),
+    ("1.3  Варианты выполнения команд. Переходим в PyCharm", "https://www.mail.ru", 1),
     ("2.1  Переменные, оператор присваивания, функции type и id", "https://www.mail.ru", 2),
     ("2.2  Числа и операции над ними", "https://www.mail.ru", 2),
     ("2.3  Математические функции и модуль math", "https://www.mail.ru", 2),
@@ -61,6 +61,7 @@ async def add_lessons(session: AsyncSession):
             module_id=lesson[2],
         )
         await Lessons.create(session, lesson_create)
+
 
 
 async def main():

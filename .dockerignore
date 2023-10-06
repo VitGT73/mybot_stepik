@@ -96,6 +96,7 @@ poetry.lock
 .env
 .venv
 venv/
+tests/
 
 
 
@@ -125,3 +126,5 @@ cython_debug/
 
 
 !/bot/images_temp/
+/tests/
+!/tests/

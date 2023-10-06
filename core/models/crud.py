@@ -10,12 +10,22 @@ class BaseCRUD:
     class ModelClass:
         pass
 
+    class CreateClass:
+        pass
+
     @classmethod
-    async def create(cls, session: AsyncSession, item_create):
+    async def create(cls, session: AsyncSession, item_create: CreateClass):
         item = cls.ModelClass(**item_create.model_dump())
         session.add(item)
         await session.commit()
         return item
+
+    @classmethod
+    async def create_all(cls, session: AsyncSession, items_create: list[CreateClass]):
+        items = [cls.ModelClass(**item.model_dump()) for item in items_create]
+        session.add_all(items)
+        await session.commit()
+        return items
 
     @classmethod
     async def get(cls, session: AsyncSession, item_id: int):

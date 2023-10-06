@@ -9,8 +9,7 @@ from sqlalchemy.orm import declared_attr
 
 class Base(DeclarativeBase):
     __abstract__ = True
-
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, sort_order=-10)
 
     def __repr__(self) -> str:
         return str(self)
@@ -25,10 +24,10 @@ class Base(DeclarativeBase):
 class TitleMixin:
     @declared_attr
     def title(cls) -> Mapped[str]:
-        return mapped_column(String(60), unique=True)
+        return mapped_column(String(60), unique=True, sort_order=-1)
 
 
 class LastUpdateMixin:
     @declared_attr
     def last_update(cls) -> Mapped[datetime | None]:
-        return mapped_column()
+        return mapped_column(sort_order=10)
