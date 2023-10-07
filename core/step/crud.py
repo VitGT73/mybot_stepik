@@ -34,12 +34,12 @@ class Steps(BaseCRUD):
         steps = await session.scalars(statement=stmt)
         return list(steps)
 
-    @staticmethod
-    async def delete_by_lesson_id(session: AsyncSession, lesson_id: int) -> None:
-        stmt = delete(Step).where(Step.parent_id == lesson_id)
-        await session.execute(stmt)
-        await session.commit()
 
+    @staticmethod
+    async def get_filename(session: AsyncSession, step_id: int) -> str:
+        smtp = select(Step.image).where(Step.id == step_id)
+        filename = await session.scalar(statement=smtp)
+        return filename
     # @staticmethod
 
 
@@ -50,7 +50,8 @@ class Steps(BaseCRUD):
 
 async def main():
     async with db_helper.session_factory() as session:
-        await Steps.gen_image_name(session=session, item_id=4)
+        filename = await Steps.get_filename(session=session, step_id=2)
+        print(filename)
         # steps = await Steps.get_step_with_solution(session=session)
         # for step in steps:
         #     print(step, step.solution)
