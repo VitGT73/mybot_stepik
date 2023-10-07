@@ -14,13 +14,15 @@
 
 import asyncio
 
-from sqlalchemy import select, Result, ScalarResult, delete
+from sqlalchemy import select, Result, ScalarResult, delete, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload, joinedload
 
 # from core.lessons.schemas import LessonWithSteps
-from core.models import Lesson, db_helper, BaseCRUD, Module
+from core.models import Lesson, db_helper, BaseCRUD, Module, Course
 from core.lessons import LessonCreate, LessonUpdate
+
+
 
 
 class Lessons(BaseCRUD):
@@ -36,25 +38,32 @@ class Lessons(BaseCRUD):
         return lesson
 
     @staticmethod
+    async def get_by_module_id(session: AsyncSession, module_id: int) -> row:
+        stmt = select(Lesson).where(Lesson.module_id == module_id)
+        items = await session.scalars(stmt)
+        return items
+
+    @staticmethod
     async def delete_by_module_id(session: AsyncSession, module_id: int) -> None:
         stmt = delete(Lesson).where(Lesson.module_id == module_id)
         await session.execute(stmt)
         await session.commit()
-    #
+
+
     # @staticmethod
-    # async def create_many(session: AsyncSession, lessons_create: list[Lesson]) -> list[Lesson]:
-    #     session.add_all(lessons_create)
-    #     await session.commit()
-    #     return lessons_create
+    # async def get_stepik_id(session: AsyncSession, lesson_id: int) -> Lesson:
+    #     stmt = select(Lesson.module_id).where(Lesson.id == lesson_id)
+    #     print(stmt)
+    #     module_id = await session.scalar(stmt)
+    #     stmt = select(Course.stepik_id).join(Module).where(and_(Module.course_id == Course.id, Module.id==module_id))
+    #     stepik_id = await session.scalar(stmt)
+    #     return stepik_id
 
     @staticmethod
     async def get_stepik_id(session: AsyncSession, lesson_id: int) -> Lesson:
-        stmt = select(Lesson.module_id).where(Lesson.id == lesson_id)
-        print(stmt)
-        module_id = await session.scalar(stmt)
-        stmt = select(Module).options(joinedload(Module.course)).where(Module.id == module_id)
-        module = await session.scalar(stmt)
-        return module.course.stepik_id
+        stmt = select(Course.stepik_id).join(Course.module).join(Module.lesson).where(Lesson.id == lesson_id)
+        stepik_id = await session.scalar(stmt)
+        return stepik_id
 
 
 
@@ -63,6 +72,7 @@ async def main():
         # await Lessons.get_all(session=session)
         stepik_id = await Lessons.get_stepik_id(session=session, lesson_id=1)
         print(stepik_id)
+
 
 
 

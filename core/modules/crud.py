@@ -13,7 +13,8 @@
 # )
 import asyncio
 
-from sqlalchemy import select, Result, delete
+from sqlalchemy import select, delete
+from sqlalchemy.engine import row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Module, db_helper, BaseCRUD, Course
@@ -30,13 +31,19 @@ class Modules(BaseCRUD):
         await session.execute(stmt)
         await session.commit()
 
-
+    @staticmethod
+    async def get_by_course_id(session: AsyncSession, course_id: int) -> row:
+        stmt = select(Module).where(Module.course_id == course_id)
+        items = await session.scalars(stmt)
+        return items
 
 
 async def main():
     async with db_helper.session_factory() as session:
-        await Modules.delete_all(session=session)
-
+        # await Modules.delete_all(session=session)
+        items = await Modules.get_by_course_id(session=session, course_id=3)
+        for item in items:
+            print(item.title)
 
 
 

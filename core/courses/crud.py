@@ -26,6 +26,8 @@ class Courses(BaseCRUD):
         item: Course | None = await session.scalar(statement=stmt)
         return item
 
+
+
     # @classmethod
     # async def create_all(cls, session: AsyncSession, items_create: list[CourseCreate]):
     #     # item = cls.ModelClass(**items_create.model_dump())
