@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class Solution(Base, LastUpdateMixin):
     __tablename__ = "solutions"
 
-    step_id: Mapped[int] = mapped_column(ForeignKey("steps.id"))
+    parent_id: Mapped[int] = mapped_column(ForeignKey("steps.id"))
     type: Mapped[int] = mapped_column(nullable=True)
     code: Mapped["Text"] = mapped_column(Text, nullable=True)
     image: Mapped[str] = mapped_column(String(255), nullable=True)
@@ -20,4 +20,4 @@ class Solution(Base, LastUpdateMixin):
 
     def __str__(self):
         return f"{self.__class__.__name__}: (id={self.id!r}, image={self.image!r}, " \
-               f"last_update={self.last_update!r}, id={self.step_id!r})"
+               f"last_update={self.last_update!r}, parent_id={self.parent_id!r})"

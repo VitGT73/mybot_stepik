@@ -16,7 +16,7 @@ class Lesson(Base, LastUpdateMixin, TitleMixin):
     url: Mapped[str] = mapped_column(String(2083))
 
     # course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
-    module_id: Mapped[int] = mapped_column(ForeignKey("modules.id"))
+    parent_id: Mapped[int] = mapped_column(ForeignKey("modules.id"))
 
     # course: Mapped["Course"] = relationship(back_populates="lesson")
     module: Mapped["Module"] = relationship(back_populates="lessons")
@@ -26,4 +26,4 @@ class Lesson(Base, LastUpdateMixin, TitleMixin):
 
     def __str__(self):
         return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, url={self.url!r}, " \
-               f"last_update={self.last_update!r})"
+               f" parent_id={self.parent_id!r},last_update={self.last_update!r})"

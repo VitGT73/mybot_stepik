@@ -28,7 +28,7 @@ class StepBase(BaseModel):
     url: HttpUrl
     image: str | None = None
     step_type_id: int
-    lesson_id: int
+    parent_id: int
     last_update: datetime | None = None
 
     @field_serializer('url')

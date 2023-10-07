@@ -21,5 +21,4 @@ class Course(Base, LastUpdateMixin, TitleMixin):
         return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, " \
                f"number={self.stepik_id!r}, url={self.url!r}, last_update={self.last_update!r})"
 
-        # return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, " \
-        #        f"number={self.stepik_id!r}, url={self.url!r}, last_update={self.last_update!r})"
+

@@ -18,7 +18,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class SolutionBase(BaseModel):
-    step_id: int
+    parent_id: int
     type: int | None = None
     code: str | None = None
     image: bytes | None = None

@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class Module(Base, LastUpdateMixin, TitleMixin):
     __tablename__ = "modules"
 
-    course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
+    parent_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
     course: Mapped["Course"] = relationship(back_populates="modules")
     lessons: Mapped[list["Lesson"]] = relationship(
         back_populates="module", cascade="all, delete-orphan"
@@ -21,4 +21,4 @@ class Module(Base, LastUpdateMixin, TitleMixin):
 
     def __str__(self):
         return f"{self.__class__.__name__}: (id={self.id!r}, title={self.title!r}, " \
-               f"last_update={self.last_update!r}, id={self.course_id!r})"
+               f"last_update={self.last_update!r}, parent_id={self.parent_id!r})"

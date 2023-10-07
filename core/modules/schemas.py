@@ -18,7 +18,7 @@ from pydantic import BaseModel, ConfigDict
 
 class ModuleBase(BaseModel):
     title: str
-    course_id: int
+    parent_id: int
 
     last_update: datetime | None = None
 

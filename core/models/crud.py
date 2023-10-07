@@ -6,10 +6,26 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import db_helper
 
 
-class BaseCRUD:
+class BaseDB:
     class ModelClass:
         pass
+class ChildrenMixin(BaseDB):
+    @classmethod
+    async def delete_by_parent_id(cls, session: AsyncSession, parent_id: int):
+        stmt = delete(cls.ModelClass).where(cls.ModelClass.parent_id == parent_id)
+        await session.execute(stmt)
+        await session.commit()
 
+    @classmethod
+    async def get_by_parent_id(cls, session: AsyncSession, parent_id: int):
+        stmt = select(cls.ModelClass).where(cls.ModelClass.parent_id == parent_id)
+        items = await session.scalars(stmt)
+        return items
+
+class BaseCRUD(BaseDB):
+
+    # class ModelClass:
+    #     pass
     class CreateClass:
         pass
 

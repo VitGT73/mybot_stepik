@@ -31,22 +31,11 @@ class Lessons(BaseCRUD):
 
     @staticmethod
     async def get_with_steps(session: AsyncSession, lesson_id: int) -> ScalarResult:
-        stmt = select(Lesson).options(selectinload(Lesson.step)).where(Lesson.id == lesson_id)
+        stmt = select(Lesson).options(selectinload(Lesson.steps)).where(Lesson.id == lesson_id)
         result: Result = await session.execute(stmt)
         lesson: ScalarResult = result.scalars()
         return lesson
 
-    @staticmethod
-    async def get_by_module_id(session: AsyncSession, module_id: int) -> ScalarResult:
-        stmt = select(Lesson).where(Lesson.module_id == module_id)
-        items = await session.scalars(stmt)
-        return items
-
-    @staticmethod
-    async def delete_by_module_id(session: AsyncSession, module_id: int) -> None:
-        stmt = delete(Lesson).where(Lesson.module_id == module_id)
-        await session.execute(stmt)
-        await session.commit()
 
 
 async def main():

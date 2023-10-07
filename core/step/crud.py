@@ -28,29 +28,32 @@ class Steps(BaseCRUD):
     ModelClass = Step
     CreateClass = StepCreate
 
-
-    # @staticmethod
-    # async def get_step_with_solution(session: AsyncSession) -> list[Step]:
-    #     stmt = select(Step).options(joinedload(Step.solution)).order_by(Step.id)
-    #     steps = await session.scalars(statement=stmt)
-    #     return list(steps)
-
+    @staticmethod
+    async def get_step_with_solution(session: AsyncSession) -> list[Step]:
+        stmt = select(Step).options(joinedload(Step.solution)).order_by(Step.id)
+        steps = await session.scalars(statement=stmt)
+        return list(steps)
 
     @staticmethod
     async def delete_by_lesson_id(session: AsyncSession, lesson_id: int) -> None:
-        stmt = delete(Step).where(Step.lesson_id == lesson_id)
+        stmt = delete(Step).where(Step.parent_id == lesson_id)
         await session.execute(stmt)
         await session.commit()
 
-
     # @staticmethod
-    # async def gen_image_name(sessinon: AsyncSession, step_id: int):
-    #     stmt = select(Step).option(joinedload(Step.lesson)).where(Step.id == step_id)
-    #     name = await sessinon.scalar(stmt)
-    #     return name
+
+
+        # stmt = select(Step).option(joinedload(Step.lesson)).where(Step.id == step_id)
+        # name = await session.scalar(stmt)
+        # return name
+
+
 async def main():
     async with db_helper.session_factory() as session:
-        await Steps.delete_all(session=session)
+        await Steps.gen_image_name(session=session, item_id=4)
+        # steps = await Steps.get_step_with_solution(session=session)
+        # for step in steps:
+        #     print(step, step.solution)
 
 
 if __name__ == "__main__":

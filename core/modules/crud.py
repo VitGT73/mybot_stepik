@@ -18,30 +18,21 @@ from sqlalchemy.engine import row
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Module, db_helper, BaseCRUD, Course
+from core.models.crud import ChildrenMixin
 from core.modules import ModuleCreate, ModuleUpdate
 
 
 
-class Modules(BaseCRUD):
+class Modules(BaseCRUD, ChildrenMixin):
     ModelClass = Module
     CreateClass = ModuleCreate
-    @staticmethod
-    async def delete_by_course_id(session: AsyncSession, course_id: int) -> None:
-        stmt = delete(Module).where(Module.course_id == course_id)
-        await session.execute(stmt)
-        await session.commit()
 
-    @staticmethod
-    async def get_by_course_id(session: AsyncSession, course_id: int) -> row:
-        stmt = select(Module).where(Module.course_id == course_id)
-        items = await session.scalars(stmt)
-        return items
 
 
 async def main():
     async with db_helper.session_factory() as session:
         # await Modules.delete_all(session=session)
-        items = await Modules.get_by_course_id(session=session, course_id=3)
+        items = await Modules.get_by_parent_id(session=session, parent_id=1)
         for item in items:
             print(item.title)
 

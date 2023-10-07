@@ -27,7 +27,7 @@ from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer
 class LessonBase(BaseModel):
     title: str
     url: HttpUrl
-    module_id: int
+    parent_id: int
     last_update: datetime | None = None
 
     @field_serializer('url')
@@ -46,7 +46,7 @@ class LessonCreate(LessonBase):
 class LessonUpdate(BaseModel):
     title: str | None = None
     url: HttpUrl
-    module_id: int
+    parent_id: int
     last_update: datetime | None = None
 
     @field_serializer('url')

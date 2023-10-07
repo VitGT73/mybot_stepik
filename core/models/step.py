@@ -17,7 +17,7 @@ class Step(Base, LastUpdateMixin):
     number: Mapped[int]
     url: Mapped[str] = mapped_column(String(2083))
     image: Mapped[str] = mapped_column(String(255),nullable=True)
-    lesson_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
+    parent_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
     step_type_id: Mapped[int] = mapped_column(ForeignKey("step_types.id"))
 
     lesson: Mapped["Lesson"] = relationship(back_populates="steps")
@@ -29,4 +29,4 @@ class Step(Base, LastUpdateMixin):
 
     def __str__(self):
         return f"{self.__class__.__name__}: (id={self.id!r}, image={self.image!r}, " \
-               f"last_update={self.last_update!r}, id={self.lesson_id!r})"
+               f"last_update={self.last_update!r}, parent_id={self.parent_id!r})"
