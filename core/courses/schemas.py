@@ -16,9 +16,13 @@ from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer
 
 class CursesBase(BaseModel):
     title: str
-    stepik_id : int
-    url: str
+    stepik_id: int
+    url: HttpUrl
     last_update: datetime | None = None
+
+    @field_serializer('url')
+    def serialize_url(self, url: HttpUrl):
+        return str(self.url)
 
 
 class CourseCreate(CursesBase):

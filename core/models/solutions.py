@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey, Text, String
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
-from .base import Base, LastUpdateMixin
+from core.models.base import Base, LastUpdateMixin
 
 if TYPE_CHECKING:
     from core.models.step import Step
@@ -13,8 +13,9 @@ class Solution(Base, LastUpdateMixin):
     __tablename__ = "solutions"
 
     step_id: Mapped[int] = mapped_column(ForeignKey("steps.id"))
-    image: Mapped[str] = mapped_column(String(255))
-    code: Mapped["Text"] = mapped_column(Text)
+    type: Mapped[int] = mapped_column(nullable=True)
+    code: Mapped["Text"] = mapped_column(Text, nullable=True)
+    image: Mapped[str] = mapped_column(String(255), nullable=True)
     step: Mapped["Step"] = relationship(back_populates="solution")
 
     def __str__(self):

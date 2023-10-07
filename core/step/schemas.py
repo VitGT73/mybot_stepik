@@ -26,7 +26,7 @@ from pydantic import BaseModel, ConfigDict, HttpUrl, field_serializer, FilePath
 class StepBase(BaseModel):
     number: int
     url: HttpUrl
-    image: FilePath
+    image: str | None = None
     step_type_id: int
     lesson_id: int
     last_update: datetime | None = None
@@ -43,7 +43,7 @@ class StepCreate(StepBase):
 class StepUpdate(BaseModel):
     number: int | None = None
     url: HttpUrl | None = None
-    image: bytes | None = None
+    image: str | None = None
     step_type_id: int | None = None
     lesson_id: int | None = None
     last_update: datetime | None = None

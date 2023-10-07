@@ -14,8 +14,8 @@ class Module(Base, LastUpdateMixin, TitleMixin):
     __tablename__ = "modules"
 
     course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"))
-    course: Mapped["Course"] = relationship(back_populates="module")
-    lesson: Mapped[list["Lesson"]] = relationship(
+    course: Mapped["Course"] = relationship(back_populates="modules")
+    lessons: Mapped[list["Lesson"]] = relationship(
         back_populates="module", cascade="all, delete-orphan"
     )
 

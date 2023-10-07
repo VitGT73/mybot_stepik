@@ -42,17 +42,12 @@ class Steps(BaseCRUD):
         await session.execute(stmt)
         await session.commit()
 
-    @staticmethod
-    async def create_many(session: AsyncSession, step_create: list[Step]) -> list[Step]:
-        session.add_all(step_create)
-        await session.commit()
-        return step_create
 
     # @staticmethod
     # async def gen_image_name(sessinon: AsyncSession, step_id: int):
     #     stmt = select(Step).option(joinedload(Step.lesson)).where(Step.id == step_id)
-    #     step = await sessinon.scalar(stmt)
-    #     return step
+    #     name = await sessinon.scalar(stmt)
+    #     return name
 async def main():
     async with db_helper.session_factory() as session:
         await Steps.delete_all(session=session)

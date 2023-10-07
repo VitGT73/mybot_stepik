@@ -9,11 +9,12 @@
 # )
 import asyncio
 
-from sqlalchemy import select
+from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload, selectinload
 
 from core.courses import CourseCreate
-from core.models import Course, db_helper, BaseCRUD
+from core.models import Course, db_helper, BaseCRUD, Module, Lesson
 
 
 class Courses(BaseCRUD):
@@ -26,20 +27,18 @@ class Courses(BaseCRUD):
         item: Course | None = await session.scalar(statement=stmt)
         return item
 
-
-
-    # @classmethod
-    # async def create_all(cls, session: AsyncSession, items_create: list[CourseCreate]):
-    #     # item = cls.ModelClass(**items_create.model_dump())
-    #     items = [cls.ModelClass(**item.model_dump()) for item in items_create]
-    #     session.add_all(items)
-    #     await session.commit()
-    #     return items
+    @staticmethod
+    async def get_stepik_id_by_lesson_id(session: AsyncSession, lesson_id: int) -> int:
+        stmt = select(Course.stepik_id).join(Course.modules).join(Module.lessons).where(Lesson.id == lesson_id)
+        stepik_id = await session.scalar(stmt)
+        return stepik_id
 
 
 async def main():
     async with db_helper.session_factory() as session:
-        pass
+        stepik_id = await Courses.get_stepik_id_by_lesson_id(session=session, lesson_id=1)
+        print(stepik_id)
+
 
 
 if __name__ == "__main__":

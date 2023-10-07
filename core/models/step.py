@@ -16,12 +16,12 @@ class Step(Base, LastUpdateMixin):
 
     number: Mapped[int]
     url: Mapped[str] = mapped_column(String(2083))
-    image: Mapped[str] = mapped_column(String(255))
+    image: Mapped[str] = mapped_column(String(255),nullable=True)
     lesson_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
     step_type_id: Mapped[int] = mapped_column(ForeignKey("step_types.id"))
 
-    lesson: Mapped["Lesson"] = relationship(back_populates="step")
-    step_type: Mapped["StepType"] = relationship(back_populates="step")
+    lesson: Mapped["Lesson"] = relationship(back_populates="steps")
+    step_type: Mapped["StepType"] = relationship(back_populates="steps")
     solution: Mapped["Solution"] = relationship(
         back_populates="step",
         cascade="all, delete-orphan"

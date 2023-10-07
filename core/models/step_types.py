@@ -13,7 +13,7 @@ class StepType(Base):
     __tablename__ = "step_types"
 
     name: Mapped[str] = mapped_column(String(10), unique=True)
-    step: Mapped[list["Step"]] = relationship(back_populates="step_type")
+    steps: Mapped[list["Step"]] = relationship(back_populates="step_type")
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__} (id={self.id!r}, step_type={self.name!r})"
