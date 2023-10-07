@@ -18,9 +18,10 @@ from pydantic import BaseModel, ConfigDict
 
 
 class SolutionBase(BaseModel):
-    code: int | None = None
-    image: bytes | None = None
     step_id: int
+    type: int | None = None
+    code: str | None = None
+    image: bytes | None = None
     last_update: datetime | None = None
 
 
@@ -29,9 +30,10 @@ class SolutionCreate(SolutionBase):
 
 
 class SolutionUpdate(BaseModel):
-    code: int | None = None
-    image: bytes | None = None
     step_id: int
+    type: int | None = None
+    code: str | None = None
+    image: bytes | None = None
     last_update: datetime | None = None
 
 
